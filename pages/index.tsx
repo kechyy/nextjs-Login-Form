@@ -1,84 +1,111 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
+import { useForm } from 'react-hook-form';
+import { Facebook, Linkedin, Twitter } from '../components/social-media-icon';
+
+
+
+const Underline = ({color}: {color: string}) => <div className={`w-10 border-2 ${color=='white'?'border-white':'border-green-500'} m-auto mb-5 mt-3`}></div>
 
 const Home: NextPage = () => {
+  const { register, handleSubmit, clearErrors, formState: 
+    { errors, isDirty, isValid, isSubmitSuccessful, isValidating, submitCount, touchedFields, dirtyFields } 
+  } = useForm({
+    defaultValues: {
+      email: 'johndoe@yahoo.com',
+      password: '.....'
+    }
+  });
+
+  const onFormSubmit = (data: FormData) => {
+    console.log(data)
+    console.log('statuses', { isDirty, isValid, isSubmitSuccessful, isValidating, submitCount, touchedFields, dirtyFields})
+  }
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="w-full h-screen p-10 bg-gray-100 flex justify-center items-center" >
       <Head>
-        <title>Create Next App</title>
+        <title>React Nextjs Tailwindcss Login</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
-
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and its API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+      <main className='w-1/2 bg-white rounded-lg shadow-2xl flex overflow-hidden'>
+          {/* Sign in Account */}
+          <div className='sm:w-3/5'>
+            <h2 className='p-5 text-sm font-bold'>Company<span className='text-green-500'>Name</span></h2>
+            <div className='flex flex-col items-center justify-center px-5 xl:px-20 pt-10 pb-20'>
+              <h2 className='text-center'>Sign in to Account</h2>
+              <Underline color='green' />
+              <div className='flex space-x-5 mb-3'>
+                <Facebook />
+                <Twitter />
+                <Linkedin />
+              </div>
+             
+              <p className='text-gray-400 pb-5'>Or use your gmail account</p>
+              <form className='w-full' onSubmit={handleSubmit(onFormSubmit)}>
+                <div className='mb-5'>
+                  <input type='email' placeholder="Email address" className='form-control' {...register('email',
+                   { 
+                     required: true, 
+                     pattern: /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+                  }) } />
+                  {errors.email?.type === 'required' && 
+                  <>
+                    <span className='inline-block text-left text-red-500 text-xs'>
+                      Email field is required
+                    </span>
+                    <button type='button' onClick={() => clearErrors('email')} className='text-xs ml-2 text-red-500'>X</button>
+                  </>
+                  }
+                  {errors.email?.type === 'pattern' && 
+                  <>
+                    <span className='inline-block text-left text-red-500 text-xs'>
+                      Email field pattern is invalid
+                    </span>
+                    <button type='button' onClick={() => clearErrors('email')}>X</button>
+                  </>
+                  }
+                </div>
+                <div className='mb-5'>
+                  <input type='password'  placeholder="Password" className='form-control' { ...register('password',{minLength: 3, required: true}) } />
+                  {errors.password?.type === 'required' && 
+                    <>
+                      <span className='inline-block text-left text-red-500 text-xs'>
+                        Password field is required
+                      </span>
+                      <button type='button' onClick={() => clearErrors('password')}>X</button>
+                    </>
+                  }
+                  {errors.password?.type === 'minLength' && 
+                    <>
+                      <span className='inline-block text-left text-red-500 text-xs'>
+                        Password cannot be less than 3 characters
+                      </span>
+                      <button type='button' onClick={() => clearErrors('password')}>X</button>
+                    </>
+                   
+                  }
+                </div>
+                
+                <div className='flex justify-between text-xs pt-1 mb-10 font-bold text-gray-500'>
+                  <p>
+                    <input type="checkbox" className=' mr-1' /><a href=''>Remember me</a>
+                  </p>
+                  <p><a>Forgot Password</a></p>
+                </div>
+                <div className='flex justify-center'>
+                  <button type='submit' className='btn bg-green-500 inline-flex text-white'> Sign In </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          {/* Sign up Account */}
+          <div  className='w-full sm:w-2/5 bg-green-500 px-5 lg:px-12 py-36 flex flex-col justify-center items-center text-center text-white'>
+            <h2 className='text-3xl mb-2 font-bold'>Hello, Friend!</h2>
+            <Underline color='white' />
+            <p className='text-white shadow-none mb-5'>Fill up personal information and start journey with us</p>
+            <a href='' className='btn'> Sign Up </a>
+          </div>
       </main>
-
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </a>
-      </footer>
     </div>
   )
 }

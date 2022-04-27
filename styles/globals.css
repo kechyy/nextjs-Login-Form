@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    h1 {
+      @apply text-5xl font-normal;
+    }
+    h2 {
+      @apply text-xl;
+    }
+    ul {
+        @apply list-disc
+    }
+    .btn {
+        @apply block rounded-full border-white border-2 py-2 px-12 hover:bg-white hover:text-green-500
+    }
+    .form-control {
+         @apply bg-gray-50 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500  focus:z-10 focus:sm:text-sm appearance-none placeholder:rounded-none block  w-full px-3 py-2 border border-gray-300
+    }
+  }
