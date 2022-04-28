@@ -8,12 +8,14 @@
   "dependencies": {
     "@headlessui/react": "^1.6.0",
     "@heroicons/react": "^1.0.6",
+    "@hookform/resolvers": "^2.8.8",
     "next": "latest",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.30.0",
     "react-icons": "^4.3.1",
-    "tw-elements": "^1.0.0-alpha12"
+    "tw-elements": "^1.0.0-alpha12",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/node": "17.0.4",
